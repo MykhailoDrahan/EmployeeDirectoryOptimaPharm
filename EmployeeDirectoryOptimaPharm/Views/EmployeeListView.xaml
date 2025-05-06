@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="EmployeeDirectoryOptimaPharm.Views.EmployeeListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeDirectoryOptimaPharm.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button FontSize="12" Content="Add Employee" Margin="5" Padding="5" Command="{Binding AddUserCommand}" Grid.Column="0"/>
+            <TextBox FontSize="12" Margin="5" Text="{Binding SearchField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button FontSize="12" Content="Import" Margin="5,5,2.5,5" Padding="5" Command="{Binding ImportFilteredEmployeesComand}" Grid.Column="0"/>
+            <Button FontSize="12" Content="Export" Margin="2.5,5,5,5" Padding="5" Command="{Binding ExportFilteredEmployeesComand}" Grid.Column="1"/>
+        </Grid>
+        <ListBox ItemsSource="{Binding FilteredEmployees}" 
+                 SelectedItem="{Binding SelectedEmployee}"
+                 HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,0,0,5" AlternationCount="2"
+                 Background="{x:Null}" BorderBrush="{x:Null}" Grid.Row="1" Grid.Column="0">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFinished}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Colored Indicator -->
+                        <Border Grid.Column="0">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Green" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFinished}" Value="True">
+                                            <Setter Property="Background" Value="DarkRed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <!-- Main Content -->
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                            <!-- Full Name -->
+                            <TextBlock FontWeight="Bold" FontSize="16">
+                                    <Run Text="{Binding Person.LastName}" />
+                                    <Run Text=" " />
+                                    <Run Text="{Binding Person.FirstName}" />
+                                    <Run Text=" " />
+                                    <Run Text="{Binding Person.MiddleName}" />
+                            </TextBlock>
+                            <!-- Position and Tax ID -->
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Text="Position: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Position.Name}" Margin="5,0,10,0"/>
+                                <TextBlock Text="Rate: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding EmploymentRate}"/>
+                            </WrapPanel>
+                            <!-- Salary and Rate -->
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Text="Salary: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Salary}" />
+                                <TextBlock Text=" ₴" />
+                            </WrapPanel>
+                            <!-- Passport -->
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock FontWeight="SemiBold">
+                                        <Run Text="{Binding Person.PersonIdentityDocument.DocumentName, Mode=OneWay}" />
+                                        <Run Text=": " />
+                                </TextBlock>
+                                <TextBlock Text="{Binding Person.PersonIdentityDocument.DocumentNumber}" Margin="5,0,10,0"/>
+                                <TextBlock Text="Tax ID: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Person.TaxIdentifier.Number}"/>
+                            </WrapPanel>
+                            <!-- Employment Dates -->
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Text="Start: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding StartDate, StringFormat=\{0:dd.MM.yyyy\}}" Margin="5,0,10,0"/>
+                                <TextBlock Text="End: " FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding EndDate, StringFormat=\{0:dd.MM.yyyy\}}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="2" Grid.Row="2">
+            <StackPanel MinWidth="200">
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="Employees: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding EmployeesCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text="{Binding EmployeesWorkingCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" Foreground="Green"/>
+                    <TextBlock Text="{Binding EmployeesFinishedCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" Foreground="DarkRed"/>
+                </WrapPanel>
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="People: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding PeopleCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text="{Binding PeopleWorkingCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" Foreground="Green"/>
+                    <TextBlock Text="{Binding PeopleFinishedCount, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" Foreground="DarkRed"/>
+                </WrapPanel>
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="Median Salary: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding MedianSalary, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text=" ₴"/>
+                </WrapPanel>
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="Min Salary: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding MinSalary, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text=" ₴"/>
+                </WrapPanel>
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="Max Salary: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding MaxSalary, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text=" ₴"/>
+                </WrapPanel>
+                <WrapPanel Margin="10,10,10,0">
+                    <TextBlock Text="Average Salary: " FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding AverageSalary, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0"/>
+                    <TextBlock Text=" ₴"/>
+                </WrapPanel>
+            </StackPanel>
+            <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="0,5,0,0">
+                <StackPanel>
+                    <WrapPanel Margin="10,10,10,0">
+                        <TextBlock Text="Terminate: " FontWeight="SemiBold" Foreground="DarkRed"/>
+                        <TextBlock Text="{Binding SelectedEmployee.Person.FullName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </WrapPanel>
+                    <StackPanel Margin="10,10,10,0">
+                        <TextBlock FontSize="12" Text="End Date" FontWeight="SemiBold"/>
+                        <DatePicker FontSize="16" IsEnabled="{Binding CanTerminate}" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" DisplayDateStart="{Binding MinTemrinateDate, Mode=OneWay}" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <CheckBox Margin="10,10,10,0" FontSize="12" Content="Are you Shure?" IsEnabled="{Binding CanTerminate}" IsChecked="{Binding IsEnabledCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button FontSize="12" Content="Terminate Employee" Margin="10,10,10,0" Padding="5" Command="{Binding TerminateEmployeeCommand}"/>
+                    <Button FontSize="12" Content="Terminate Person" Margin="10,10,10,0" Padding="5" Command="{Binding TerminatePersonCommand}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

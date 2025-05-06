@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="EmployeeDirectoryOptimaPharm.Views.AddEmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeDirectoryOptimaPharm.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button  FontSize="12" Content="Back" Margin="5" Padding="5" Command="{Binding BackCommand}"/>
+            <!--<Button  FontSize="12" Content="Import Employee" Margin="5" Padding="5" Command="{Binding ImportCommand}"/>-->
+        </StackPanel>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="12" Text="Tax Identifier" FontWeight="SemiBold" Grid.Row="0" Grid.Column="0"/>
+            <ComboBox FontSize="16" Height="30" IsEditable="True" Grid.Row="1" Grid.Column="0" Margin="5,5,5,10"
+        ToolTip="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"
+        IsEnabled="{Binding IsEnableTaxIdentifier, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        ItemsSource="{Binding FilteredPeople}"
+        Text="{Binding TaxIdentifierNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding SelectedTaxIdentifier, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenTaxIdentifier, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"
+        DisplayMemberPath="TaxIdentifier.Number"/>
+            <TextBlock FontSize="12" Text="Identity Document" FontWeight="SemiBold"  Grid.Row="0" Grid.Column="1"/>
+            <ComboBox FontSize="16" Height="30" IsEditable="True"  Grid.Row="1" Grid.Column="1" Margin="5,5,5,10"             
+        ToolTip="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"
+        IsEnabled="{Binding IsEnableIdentityDocument, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        ItemsSource="{Binding FilteredPeople}"
+        Text="{Binding IdentityDocumentNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding SelectedIdentityDocument, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenIdentityDocument, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"
+        DisplayMemberPath="PersonIdentityDocument.DocumentNumber"/>
+            <TextBlock FontSize="12" Text="LastName" FontWeight="SemiBold"  Grid.Row="2" Grid.Column="0"/>
+            <ComboBox FontSize="16" Height="30" IsEditable="True" Grid.Row="3" Grid.Column="0" Margin="5,5,5,10"               
+        IsEnabled="{Binding IsEnablePerson, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        ItemsSource="{Binding FilteredLastName}"
+        Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding LastName, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenLastName, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"/>
+            <TextBlock FontSize="12" Text="FirstName" FontWeight="SemiBold" Grid.Row="2" Grid.Column="1" />
+            <ComboBox FontSize="16" Height="30" IsEditable="True" Grid.Row="3" Grid.Column="1" Margin="5,5,5,10"               
+        IsEnabled="{Binding IsEnablePerson, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        ItemsSource="{Binding FilteredFirstName}"
+        Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding FirstName, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenFirstName, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"/>
+            <TextBlock FontSize="12" Text="MiddleName" FontWeight="SemiBold" Grid.Row="2" Grid.Column="2" />
+            <ComboBox FontSize="16" Height="30" IsEditable="True" Grid.Row="3" Grid.Column="2" Margin="5,5,5,10"               
+        IsEnabled="{Binding IsEnablePerson, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+        ItemsSource="{Binding FilteredMiddleName}"
+        Text="{Binding MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding MiddleName, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenMiddleName, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"/>
+            <TextBlock FontSize="12" Text="Position" FontWeight="SemiBold" Grid.Row="4" Grid.Column="0" />
+            <ComboBox FontSize="16" Height="30" IsEditable="True" Grid.Row="5" Grid.Column="0" Margin="5,5,5,10"
+        ItemsSource="{Binding FilteredPositions}"
+        Text="{Binding PositionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+        SelectedItem="{Binding SelectedPosition, Mode=TwoWay}"
+        IsDropDownOpen="{Binding IsDropDownOpenPosition, Mode=TwoWay}"
+        StaysOpenOnEdit="True"
+        IsTextSearchEnabled="False"
+        DisplayMemberPath="Name"/>
+            <TextBlock FontSize="12" Text="Employment Rate" FontWeight="SemiBold" Grid.Row="4" Grid.Column="1" />
+            <TextBox  FontSize="16" Height="30" Grid.Row="5" Grid.Column="1" Margin="5,5,5,10"
+        Text="{Binding EmploymentRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            <TextBlock FontSize="12" Text="Salary" FontWeight="SemiBold" Grid.Row="4" Grid.Column="2" />
+            <TextBox  FontSize="16" Height="30" Grid.Row="5" Grid.Column="2" Margin="5,5,5,10"
+        Text="{Binding Salary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            <TextBlock FontSize="12" Text="Start Date" FontWeight="SemiBold" Grid.Row="6" Grid.Column="0" />
+            <DatePicker FontSize="16" Height="30" Grid.Row="7" Grid.Column="0" Margin="5,5,5,10" SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            <TextBlock FontSize="12" Text="End Date" FontWeight="SemiBold" Grid.Row="6" Grid.Column="1" />
+            <DatePicker FontSize="16" Height="30" Grid.Row="7" Grid.Column="1" Margin="5,5,5,10" SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            <Button  FontSize="16" Content="Add Employee" Height="35" Margin="5,5,5,10" Grid.Row="7" Grid.Column="2" Command="{Binding AddEmployeeCommand}"/>
+        </Grid>
+    </StackPanel>        
+</UserControl>
